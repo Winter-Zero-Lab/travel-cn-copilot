@@ -18,4 +18,3 @@ services:
         value: "glm-5.3-flash"
       - key: LLM_TIMEOUT
         value: "60"
-    autoDeploy: true

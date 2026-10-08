@@ -111,18 +111,19 @@ tools/
 render.yaml        — Render.com one-click deploy
 ```
 
-## Deploy (one click)
+## Deploy (Render Blueprint)
 
-The repo ships `render.yaml`:
+The repo ships `render.yaml`, so Render configures the service automatically:
 
 1. Push to GitHub.
-2. Render → New Web Service → connect repo → Render reads it automatically.
-3. Set `LLM_API_KEY` in the dashboard (marked `sync: false` in render.yaml so it isn't
-   committed).
-4. Wait ~1 minute for the build; service is live.
+2. Render → **New** → **Blueprint** → connect this repo → Render reads `render.yaml`.
+3. Render asks for the `sync: false` variable — paste `LLM_API_KEY` there.
+4. Wait ~2 min for `pip install` + build. Health check hits `/api/health`.
 
-Free tier works for the demo (uploads + one model call per click). The recompute path
-that drives the time slider **does not call the model**, so it is essentially free.
+> **Demo-day tip:** Render's free tier sleeps after ~15 min idle and the first request
+> after sleeping takes 20-50 s to wake up. Open the URL once a few minutes before you
+> present, and the demo will be instant. Each click costs one model call; the time
+> slider uses `/api/recompute`, which skips the model entirely.
 
 ## Why this design?
 
