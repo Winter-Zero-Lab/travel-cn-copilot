@@ -377,9 +377,12 @@ function renderSteps(ss) {
   ss.forEach((s) => {
     const li = document.createElement("li");
     li.innerHTML = `
-      <div class="action">${escapeHtml(s.action)}</div>
-      <div class="detail">${escapeHtml(s.detail)}</div>
-      <span class="rule-ref">${escapeHtml(s.rule_ref)}</span>`;
+      <div class="n">${escapeHtml(s.order)}</div>
+      <div>
+        <div class="action">${escapeHtml(s.action)}</div>
+        <div class="detail">${escapeHtml(s.detail)}</div>
+        <span class="rule-ref">${escapeHtml(s.rule_ref)}</span>
+      </div>`;
     root.appendChild(li);
   });
 }
