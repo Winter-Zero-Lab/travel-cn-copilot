@@ -1,0 +1,15 @@
+[project]
+name = "travel-cn-copilot"
+version = "0.1.0"
+description = "Travel China Buddy - inbound traveler on-site procedure copilot (team: 钉子头)"
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi==0.115.6",
+    "uvicorn[standard]==0.34.0",
+    "httpx==0.28.1",
+    "python-multipart==0.0.20",
+    "pydantic==2.10.4",
+]
+
+[tool.uv]
+dev-dependencies = ["pillow>=11.0.0"]

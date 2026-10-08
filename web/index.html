@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Travel-China Copilot · 钉子头</title>
+<link rel="stylesheet" href="/style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 64 64%22><text y=%2252%22 font-size=%2252%22>钉</text></svg>">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">
+    <span class="brand-mark">钉</span>
+    <div>
+      <div class="brand-title">Travel-China Copilot</div>
+      <div class="brand-sub">入境游客现场操作指引 · Multimodal AI + Rule Engine</div>
+    </div>
+  </div>
+  <div class="lang-switch">
+    <label for="lang">语言</label>
+    <select id="lang">
+      <option value="en">English</option>
+      <option value="zh">简体中文</option>
+      <option value="ja">日本語</option>
+      <option value="ko">한국어</option>
+      <option value="fr">Français</option>
+      <option value="es">Español</option>
+      <option value="de">Deutsch</option>
+    </select>
+  </div>
+</header>
+
+<main class="layout">
+  <!-- left column: context + samples + upload -->
+  <aside class="left">
+    <section class="card">
+      <h2>1 · Trip context</h2>
+      <p class="hint">Rules compare what's on site with what's in your itinerary.</p>
+      <div class="grid two">
+        <label>City
+          <input id="t-city" type="text" placeholder="Beijing" autocomplete="off">
+        </label>
+        <label>Departure station (planned)
+          <input id="t-station" type="text" placeholder="北京南站" autocomplete="off">
+        </label>
+        <label>Train number
+          <input id="t-train" type="text" placeholder="G7" autocomplete="off">
+        </label>
+        <label>Booked with
+          <select id="t-booked">
+            <option value="passport">Passport (foreign)</option>
+            <option value="chinese_id">Chinese ID</option>
+            <option value="other">Other</option>
+            <option value="unknown">Not sure</option>
+          </select>
+        </label>
+        <label class="span2">Carry in my hand
+          <input id="t-docs" type="text" placeholder="passport, booking_qr, cash, card…" autocomplete="off">
+          <small>passport · chinese_id · visa · booking_qr · cash · card</small>
+        </label>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>2 · Show the site</h2>
+      <div class="upload">
+        <label class="file-btn">
+          <input id="file" type="file" accept="image/*" capture="environment" hidden>
+          <span>📷 Take photo / upload</span>
+        </label>
+        <div class="preview" id="preview"><div class="preview-empty">No image yet</div></div>
+      </div>
+      <textarea id="question" placeholder="Optional: type what you're asking…&#10;e.g. &quot;This machine won't accept me, what now?&quot;"></textarea>
+    </section>
+
+    <section class="card">
+      <h2>3 · Built-in cases</h2>
+      <p class="hint">Click to load — these are the cases translation apps can't solve.</p>
+      <div id="samples" class="samples"></div>
+    </section>
+  </aside>
+
+  <!-- right column: result -->
+  <section class="right">
+    <div id="placeholder" class="placeholder">
+      <div class="placeholder-art">钉</div>
+      <p>Snap or load a scene, fill in your trip — get the next action in your pocket.</p>
+    </div>
+
+    <div id="result" class="result hidden">
+      <div class="row timing-row" id="timing"></div>
+
+      <div class="card findings-card">
+        <div class="card-head">
+          <h2>Verdicts from the rule engine</h2>
+          <span class="badge badge-rule">rule</span>
+        </div>
+        <div id="findings" class="findings"></div>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <h2>Steps — in this order</h2>
+          <span class="badge badge-rule">rule</span>
+        </div>
+        <ol id="steps" class="steps"></ol>
+      </div>
+
+      <div class="card phrases-card">
+        <div class="card-head">
+          <h2>Show this to staff in 中文</h2>
+          <span class="badge badge-rule">rule</span>
+        </div>
+        <div id="phrases" class="phrases"></div>
+      </div>
+
+      <div class="card missing-card" id="missing-card">
+        <div class="card-head"><h2>Missing items</h2></div>
+        <div id="missing"></div>
+      </div>
+
+      <div class="card ai-card">
+        <div class="card-head">
+          <h2>AI answer note</h2>
+          <span class="badge badge-ai">model</span>
+        </div>
+        <p id="ai-note" class="ai-note">—</p>
+        <small class="muted" id="ai-meta"></small>
+      </div>
+
+      <div class="card slim">
+        <div class="card-head"><h2>What's on site (model read)</h2></div>
+        <div id="vision" class="vision"></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div class="demo-bar" id="demo-bar">
+  <div class="demo-bar-inner">
+    <div class="demo-bar-label">
+      <strong id="dial-label">28 min to departure</strong>
+      <small>Slide to feel the rule engine react in real time (no model call)</small>
+    </div>
+    <input id="dial" type="range" min="-5" max="120" value="28">
+    <button id="dial-now" type="button">Reset to now</button>
+  </div>
+</div>
+
+<script src="/app.js"></script>
+</body>
+</html>

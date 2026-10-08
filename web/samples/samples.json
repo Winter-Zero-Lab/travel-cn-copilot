@@ -1,0 +1,102 @@
+[
+  {
+    "id": "wrong_station",
+    "file": "01-wrong-station.jpg",
+    "title": "I'm at the entrance — but is this the right station?",
+    "title_zh": "站在车站入口，但这站对吗？",
+    "kicker": "Wrong station in the same city",
+    "scene_hint": "rail_entrance",
+    "question": "I followed the signs to the station. Am I in the right place?",
+    "depart_in_minutes": 55,
+    "trip": {
+      "city": "北京",
+      "planned_station": "北京南站",
+      "train_no": "G7",
+      "booked_with": "passport",
+      "documents": [
+        "passport"
+      ]
+    },
+    "highlight": "OCR reads 北京站 correctly. Only the rule engine knows your train leaves from 北京南站, 40 minutes away."
+  },
+  {
+    "id": "kiosk",
+    "file": "02-kiosk.jpg",
+    "title": "The machine won't accept me — what now?",
+    "title_zh": "自助机不认我，怎么办？",
+    "kicker": "Kiosk cannot read a passport",
+    "scene_hint": "rail_kiosk",
+    "question": "This machine keeps rejecting me. Do I need a paper ticket?",
+    "depart_in_minutes": 40,
+    "trip": {
+      "city": "北京",
+      "planned_station": "北京南站",
+      "train_no": "G7",
+      "booked_with": "passport",
+      "documents": [
+        "passport"
+      ]
+    },
+    "highlight": "The screen is readable in any language. The fix is procedural: this machine is impossible for you, and you probably never needed paper."
+  },
+  {
+    "id": "eticket",
+    "file": "03-eticket.jpg",
+    "title": "I have my booking — what do I actually do?",
+    "title_zh": "我有订单了，接下来做什么？",
+    "kicker": "Full departure procedure",
+    "scene_hint": "rail_ticket",
+    "question": "I have my ticket on my phone. What do I do when I get to the station?",
+    "depart_in_minutes": 28,
+    "trip": {
+      "city": "北京",
+      "planned_station": "北京南站",
+      "train_no": "G7",
+      "booked_with": "passport",
+      "documents": [
+        "passport"
+      ]
+    },
+    "highlight": "Translation gives you the words on the ticket. We give you the 7 steps, the document rule and the real deadline."
+  },
+  {
+    "id": "board",
+    "file": "04-board.jpg",
+    "title": "It says 'now boarding' — where do I go?",
+    "title_zh": "大屏显示正在检票，我该去哪？",
+    "kicker": "Deadline is minutes away",
+    "scene_hint": "rail_waiting_hall",
+    "question": "The board says my train is boarding. Which way?",
+    "depart_in_minutes": 8,
+    "trip": {
+      "city": "北京",
+      "planned_station": "北京南站",
+      "train_no": "G7",
+      "booked_with": "passport",
+      "documents": [
+        "passport"
+      ]
+    },
+    "highlight": "8 minutes to departure, gate closes at 08:55. The countdown is computed from a rule, not printed anywhere."
+  },
+  {
+    "id": "hotel",
+    "file": "05-hotel.jpg",
+    "title": "Hotel front desk — what will they ask for?",
+    "title_zh": "酒店前台会要什么？",
+    "kicker": "Mandatory passport registration",
+    "scene_hint": "hotel_checkin",
+    "question": "I'm checking in. Do they need my passport or just the booking?",
+    "depart_in_minutes": null,
+    "trip": {
+      "city": "上海",
+      "planned_station": "",
+      "train_no": "",
+      "booked_with": "passport",
+      "documents": [
+        "passport"
+      ]
+    },
+    "highlight": "Registration is a legal requirement on the ORIGINAL document — a fact no translation of the sign can supply."
+  }
+]
