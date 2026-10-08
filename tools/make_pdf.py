@@ -232,27 +232,6 @@ def build(path):
                       demo_rows, [30, 170, CONTENT_W - 200]))
     s.append(Spacer(1, 14))
 
-    # ---------- 为什么这样设计 ----------
-    s += section("为什么这样设计（对应评委三点）")
-    s.append(bullets([
-        "<b>聚焦垂直切片</b>：只做高铁出发全链（进站 · 取票 · 闸机 · 站台）+ 酒店入住，不贪多；",
-        "<b>可见的 AI vs 规则分工</b>：每个面板都带 RULE（确定性、可审计）或 MODEL（感知 / 润色）徽章，规则结论从不被模型覆盖；",
-        "<b>专挑翻译软件解不了的场景</b>：5 个内置场景 + 实时拍照，每个结论都附一句“为什么普通翻译 app 帮不了你”。",
-    ]))
-    s.append(Spacer(1, 10))
-
-    # ---------- 部署与演示 ----------
-    s += section("部署与演示")
-    s.append(bullets([
-        "仓库自带 render.yaml，一键部署到 Render；",
-        "演示无需任何 LLM API Key：5 个场景写死在 app/demo_cases.py，由 /api/demo 经规则引擎 + 静态中文翻译表输出，零模型调用；",
-        "真实“上传自己的照片”路径，仅在配置 Key 后才会调用多模态模型；",
-        "中英双语界面，?lang=zh 深链直达中文版；时间轴滑块实时重算倒计时，亦不调用模型。",
-    ], color=WARN))
-    s.append(Spacer(1, 10))
-    s.append(Paragraph(
-        "项目地址（示例）：github.com/Winter-Zero-Lab/travel-cn-copilot", note))
-
     doc.build(s, onFirstPage=footer, onLaterPages=footer)
     print("PDF written:", path)
 
