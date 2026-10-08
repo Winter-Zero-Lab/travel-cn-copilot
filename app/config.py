@@ -81,4 +81,5 @@ CONFUSABLE_STATIONS = {
     "武汉": ["武昌站", "汉口站", "武汉站"],
 }
 
-SUPPORTED_LANGS = ["en", "zh", "ja", "ko", "es", "fr", "de"]
+# Only English and 简体中文 ship in the demo UI.
+SUPPORTED_LANGS = ["en", "zh"]

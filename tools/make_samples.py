@@ -203,6 +203,7 @@ SAMPLES_META = [
         "kicker": "Wrong station in the same city",
         "scene_hint": "rail_entrance",
         "question": "I followed the signs to the station. Am I in the right place?",
+        "question_zh": "我是跟着指示牌走到这个车站的，我在正确的地方吗？",
         "depart_in_minutes": 55,
         "trip": {
             "city": "北京",
@@ -222,6 +223,7 @@ SAMPLES_META = [
         "kicker": "Kiosk cannot read a passport",
         "scene_hint": "rail_kiosk",
         "question": "This machine keeps rejecting me. Do I need a paper ticket?",
+        "question_zh": "这台机器一直拒绝我，我一定要取纸质票吗？",
         "depart_in_minutes": 40,
         "trip": {
             "city": "北京",
@@ -241,6 +243,7 @@ SAMPLES_META = [
         "kicker": "Full departure procedure",
         "scene_hint": "rail_ticket",
         "question": "I have my ticket on my phone. What do I do when I get to the station?",
+        "question_zh": "我的票在手机上，到了车站该做什么？",
         "depart_in_minutes": 28,
         "trip": {
             "city": "北京",
@@ -260,6 +263,7 @@ SAMPLES_META = [
         "kicker": "Deadline is minutes away",
         "scene_hint": "rail_waiting_hall",
         "question": "The board says my train is boarding. Which way?",
+        "question_zh": "大屏显示我的车正在检票，我该往哪走？",
         "depart_in_minutes": 8,
         "trip": {
             "city": "北京",
@@ -279,6 +283,7 @@ SAMPLES_META = [
         "kicker": "Mandatory passport registration",
         "scene_hint": "hotel_checkin",
         "question": "I'm checking in. Do they need my passport or just the booking?",
+        "question_zh": "我要办入住，他们要护照还是只要订单？",
         "depart_in_minutes": None,
         "trip": {
             "city": "上海",

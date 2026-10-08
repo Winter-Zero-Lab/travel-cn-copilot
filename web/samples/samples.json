@@ -17,7 +17,8 @@
         "passport"
       ]
     },
-    "highlight": "OCR reads 北京站 correctly. Only the rule engine knows your train leaves from 北京南站, 40 minutes away."
+    "highlight": "OCR reads 北京站 correctly. Only the rule engine knows your train leaves from 北京南站, 40 minutes away.",
+    "question_zh": "我是跟着指示牌走到这个车站的，我在正确的地方吗？"
   },
   {
     "id": "kiosk",
@@ -37,7 +38,8 @@
         "passport"
       ]
     },
-    "highlight": "The screen is readable in any language. The fix is procedural: this machine is impossible for you, and you probably never needed paper."
+    "highlight": "The screen is readable in any language. The fix is procedural: this machine is impossible for you, and you probably never needed paper.",
+    "question_zh": "这台机器一直拒绝我，我一定要取纸质票吗？"
   },
   {
     "id": "eticket",
@@ -57,7 +59,8 @@
         "passport"
       ]
     },
-    "highlight": "Translation gives you the words on the ticket. We give you the 7 steps, the document rule and the real deadline."
+    "highlight": "Translation gives you the words on the ticket. We give you the 7 steps, the document rule and the real deadline.",
+    "question_zh": "我的票在手机上，到了车站该做什么？"
   },
   {
     "id": "board",
@@ -77,7 +80,8 @@
         "passport"
       ]
     },
-    "highlight": "8 minutes to departure, gate closes at 08:55. The countdown is computed from a rule, not printed anywhere."
+    "highlight": "8 minutes to departure, gate closes at 08:55. The countdown is computed from a rule, not printed anywhere.",
+    "question_zh": "大屏显示我的车正在检票，我该往哪走？"
   },
   {
     "id": "hotel",
@@ -97,6 +101,7 @@
         "passport"
       ]
     },
-    "highlight": "Registration is a legal requirement on the ORIGINAL document — a fact no translation of the sign can supply."
+    "highlight": "Registration is a legal requirement on the ORIGINAL document — a fact no translation of the sign can supply.",
+    "question_zh": "我要办入住，他们要护照还是只要订单？"
   }
 ]

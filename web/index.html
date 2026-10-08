@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Travel-China Copilot — Know exactly what to do next</title>
 <meta name="description" content="Snap a sign, machine or ticket in China. Get the next action, not another translation.">
-<link rel="stylesheet" href="/style.css?v=2">
+<link rel="stylesheet" href="/style.css?v=3">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='11.5' fill='%230071e3'/%3E%3Ccircle cx='12.5' cy='27.5' r='3.1' fill='%23fff'/%3E%3Cpath d='M12.5 24.4V18a5 5 0 0 1 5-5h6' stroke='%23fff' stroke-width='2.6' stroke-linecap='round' fill='none'/%3E%3Cpath d='M20.6 9.6 24.4 13l-3.8 3.4' stroke='%23fff' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E">
 </head>
 <body>
@@ -27,7 +27,7 @@
     </svg>
     <div class="brand-text">
       <div class="brand-title">Travel-China Copilot</div>
-      <div class="brand-sub">On-site copilot for inbound travellers</div>
+      <div class="brand-sub" data-i18n="brandSub">On-site copilot for inbound travellers</div>
     </div>
   </div>
   <div class="nav-right">
@@ -35,11 +35,6 @@
       <select id="lang" aria-label="Language">
         <option value="en">English</option>
         <option value="zh">简体中文</option>
-        <option value="ja">日本語</option>
-        <option value="ko">한국어</option>
-        <option value="fr">Français</option>
-        <option value="es">Español</option>
-        <option value="de">Deutsch</option>
       </select>
     </div>
   </div>
@@ -47,13 +42,13 @@
 
 <section class="hero">
   <p class="eyebrow">Travel-China Copilot</p>
-  <h1>Know exactly what to do next.</h1>
-  <p class="sub">Snap the sign, the machine or the ticket. Get the next action —
+  <h1 data-i18n="heroTitle">Know exactly what to do next.</h1>
+  <p class="sub" data-i18n="heroSub">Snap the sign, the machine or the ticket. Get the next action —
      not another translation.</p>
   <div class="chips">
-    <span class="chip"><b>Model</b> reads the scene</span>
-    <span class="chip"><b>Rules</b> decide the deadline</span>
-    <span class="chip"><b>中文</b> ready to show staff</span>
+    <span class="chip" data-i18n-html="chipModel"><b>Model</b> reads the scene</span>
+    <span class="chip" data-i18n-html="chipRules"><b>Rules</b> decide the deadline</span>
+    <span class="chip" data-i18n-html="chipZh"><b>中文</b> ready to show staff</span>
   </div>
 </section>
 
@@ -61,35 +56,35 @@
   <!-- left column: context + samples + upload -->
   <aside class="left">
     <section class="card">
-      <h2>1 · Trip context</h2>
-      <p class="hint">Rules compare what's on site with your itinerary.</p>
+      <h2 data-i18n="step1">1 · Trip context</h2>
+      <p class="hint" data-i18n="step1Hint">Rules compare what's on site with your itinerary.</p>
       <div class="grid two">
-        <label>City
+        <label><span data-i18n="lblCity">City</span>
           <input id="t-city" type="text" placeholder="Beijing" autocomplete="off">
         </label>
-        <label>Departure station (planned)
+        <label><span data-i18n="lblStation">Departure station (planned)</span>
           <input id="t-station" type="text" placeholder="北京南站" autocomplete="off">
         </label>
-        <label>Train number
+        <label><span data-i18n="lblTrain">Train number</span>
           <input id="t-train" type="text" placeholder="G7" autocomplete="off">
         </label>
-        <label>Booked with
+        <label><span data-i18n="lblBooked">Booked with</span>
           <select id="t-booked">
-            <option value="passport">Passport (foreign)</option>
-            <option value="chinese_id">Chinese ID</option>
-            <option value="other">Other</option>
-            <option value="unknown">Not sure</option>
+            <option value="passport" data-i18n="optPassport">Passport (foreign)</option>
+            <option value="chinese_id" data-i18n="optChineseId">Chinese ID</option>
+            <option value="other" data-i18n="optOther">Other</option>
+            <option value="unknown" data-i18n="optUnknown">Not sure</option>
           </select>
         </label>
-        <label class="span2">Carry in my hand
+        <label class="span2"><span data-i18n="lblCarry">Carry in my hand</span>
           <input id="t-docs" type="text" placeholder="passport, booking_qr, cash, card…" autocomplete="off">
-          <span class="field-note">passport · chinese_id · visa · booking_qr · cash · card</span>
+          <span class="field-note" data-i18n="carryNote">passport · chinese_id · visa · booking_qr · cash · card</span>
         </label>
       </div>
     </section>
 
     <section class="card">
-      <h2>2 · Show the site</h2>
+      <h2 data-i18n="step2">2 · Show the site</h2>
       <div class="upload">
         <label class="file-btn">
           <input id="file" type="file" accept="image/*" capture="environment" hidden>
@@ -97,16 +92,16 @@
             <path d="M3 8.5A2.5 2.5 0 0 1 5.5 6h1.7l1.2-2h6.2l1.2 2h1.7A2.5 2.5 0 0 1 20 8.5v8A2.5 2.5 0 0 1 17.5 19h-11A2.5 2.5 0 0 1 4 16.5v-8Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
             <circle cx="11.5" cy="12.5" r="3.2" stroke="currentColor" stroke-width="1.8"/>
           </svg>
-          <span>Take photo</span>
+          <span data-i18n="btnPhoto">Take photo</span>
         </label>
-        <div class="preview" id="preview"><div class="preview-empty">No image yet</div></div>
+        <div class="preview" id="preview"><div class="preview-empty" data-i18n="noImage">No image yet</div></div>
       </div>
-      <textarea id="question" placeholder="Optional — what are you asking?&#10;e.g. &quot;This machine won't accept me, what now?&quot;"></textarea>
+      <textarea id="question" data-i18n-ph="questionPh" placeholder="Optional — what are you asking?&#10;e.g. &quot;This machine won't accept me, what now?&quot;"></textarea>
     </section>
 
     <section class="card">
-      <h2>3 · Built-in cases</h2>
-      <p class="hint">Tap to load — the cases a translation app can't solve.</p>
+      <h2 data-i18n="step3">3 · Built-in cases</h2>
+      <p class="hint" data-i18n="step3Hint">Tap to load — the cases a translation app can't solve.</p>
       <div id="samples" class="samples"></div>
     </section>
   </aside>
@@ -127,8 +122,8 @@
         <path d="M12.5 24.4V18a5 5 0 0 1 5-5h6" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round"/>
         <path d="M20.6 9.6 24.4 13l-3.8 3.4" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
-      <h3>Your next move, in your language</h3>
-      <p>Snap or load a scene, fill in your trip — and get the exact next step,
+      <h3 data-i18n="emptyTitle">Your next move, in your language</h3>
+      <p data-i18n="emptyBody">Snap or load a scene, fill in your trip — and get the exact next step,
          the document you need, and the real deadline.</p>
     </div>
 
@@ -137,44 +132,44 @@
 
       <div class="card">
         <div class="card-head">
-          <h2>Verdicts from the rule engine</h2>
-          <span class="badge badge-rule">rule</span>
+          <h2 data-i18n="verdicts">Verdicts from the rule engine</h2>
+          <span class="badge badge-rule" data-i18n="badgeRule">rule</span>
         </div>
         <div id="findings" class="findings"></div>
       </div>
 
       <div class="card">
         <div class="card-head">
-          <h2>Steps — in this order</h2>
-          <span class="badge badge-rule">rule</span>
+          <h2 data-i18n="stepsTitle">Steps — in this order</h2>
+          <span class="badge badge-rule" data-i18n="badgeRule">rule</span>
         </div>
         <ol id="steps" class="steps"></ol>
       </div>
 
       <div class="card">
         <div class="card-head">
-          <h2>Show this to staff in 中文</h2>
-          <span class="badge badge-rule">rule</span>
+          <h2 data-i18n="phrasesTitle">Show this to staff in 中文</h2>
+          <span class="badge badge-rule" data-i18n="badgeRule">rule</span>
         </div>
         <div id="phrases" class="phrases"></div>
       </div>
 
       <div class="card" id="missing-card">
-        <div class="card-head"><h2>Missing items</h2></div>
+        <div class="card-head"><h2 data-i18n="missingTitle">Missing items</h2></div>
         <div id="missing"></div>
       </div>
 
       <div class="card ai-card">
         <div class="card-head">
-          <h2>AI answer note</h2>
-          <span class="badge badge-ai">model</span>
+          <h2 data-i18n="aiTitle">AI answer note</h2>
+          <span class="badge badge-ai" data-i18n="badgeModel">model</span>
         </div>
         <p id="ai-note" class="ai-note">—</p>
         <small class="muted" id="ai-meta"></small>
       </div>
 
       <div class="card slim">
-        <div class="card-head"><h2>What's on site (model read)</h2></div>
+        <div class="card-head"><h2 data-i18n="visionTitle">What's on site (model read)</h2></div>
         <div id="vision" class="vision"></div>
       </div>
     </div>
@@ -182,20 +177,21 @@
 </main>
 
 <footer class="footer">
-  <span>钉子头 · Team entry — 入境游 AI 创新</span>
+  <span data-i18n="footer">钉子头 · Team entry — 入境游 AI 创新</span>
 </footer>
 
 <div class="demo-bar" id="demo-bar">
   <div class="demo-bar-inner">
     <div class="demo-bar-label">
       <strong id="dial-label">28 min to departure</strong>
-      <small>Slide to watch the rule engine react — no model call</small>
+      <small data-i18n="dialHint">Slide to watch the rule engine react — no model call</small>
     </div>
-    <input id="dial" type="range" min="-5" max="120" value="28" aria-label="Minutes until departure">
-    <button id="dial-now" type="button">Reset</button>
+    <input id="dial" type="range" min="-5" max="120" value="28"
+           data-i18n-ar="dialAria" aria-label="Minutes until departure">
+    <button id="dial-now" type="button" data-i18n="btnReset">Reset</button>
   </div>
 </div>
 
-<script src="/app.js?v=2"></script>
+<script src="/app.js?v=3"></script>
 </body>
 </html>

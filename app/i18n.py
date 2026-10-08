@@ -44,10 +44,7 @@ Then add ONE extra top-level key:
 Return minified JSON only. Input JSON:
 {payload}"""
 
-LANG_NAMES = {
-    "en": "English", "zh": "简体中文", "ja": "日本語", "ko": "한국어",
-    "es": "Español", "fr": "Français", "de": "Deutsch",
-}
+LANG_NAMES = {"en": "English", "zh": "简体中文"}
 
 
 def to_payload(result: RuleResult, vision: dict, lang: str) -> dict:
@@ -105,10 +102,38 @@ def _deep_fill(dst: dict, src: dict) -> dict:
 
 
 def _align_lists(dst: dict, src: dict) -> None:
-    """If the model changed the number of steps/findings, restore the rule output."""
+    """Keep the model's translated list unless it broke the structure.
+
+    The model is told to keep array lengths and item identity identical. If it
+    dropped/added items or silently reordered them, fall back to the English
+    source (``src``) so the UI never shows a misaligned verdict. Otherwise we
+    trust the model's translated ``dst`` — this is exactly what preserves the
+    Chinese (or other) translation of findings/steps instead of reverting it.
+    """
     for key in ("steps", "findings", "missing", "facts_used"):
-        if key in src:
-            dst[key] = src[key]
+        if key not in src:
+            continue
+        dst_list = dst.get(key)
+        src_list = src.get(key)
+        if not isinstance(dst_list, list) or not isinstance(src_list, list):
+            # Model returned a non-list — trust the deterministic source.
+            dst[key] = src_list
+            continue
+        if len(dst_list) != len(src_list):
+            # Model added/removed items — restore the source to keep structure.
+            dst[key] = src_list
+            continue
+        # Length matches. Guard against silent reordering using identity fields.
+        if key in ("steps", "findings"):
+            id_field = "order" if key == "steps" else "rule_ref"
+            misaligned = any(
+                not isinstance(d, dict)
+                or not isinstance(s, dict)
+                or d.get(id_field) != s.get(id_field)
+                for d, s in zip(dst_list, src_list)
+            )
+            if misaligned:
+                dst[key] = src_list
 
 
 async def express(payload: dict, lang: str, question: str, with_ai_note: bool = True) -> dict:

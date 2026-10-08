@@ -12,9 +12,202 @@ const state = {
   dialTimer: null,
 };
 
-const SEV_LABEL = {
-  critical: "CRITICAL", warn: "WARN", info: "INFO",
+// ---------------------------------------------------------------------------
+// UI strings — the chrome of the app itself (not the model/rule output, which
+// is translated server-side). Only English and 简体中文 are supported.
+// ---------------------------------------------------------------------------
+const UI_STRINGS = {
+  en: {
+    brandSub: "On-site copilot for inbound travellers",
+    heroTitle: "Know exactly what to do next.",
+    heroSub: "Snap the sign, the machine or the ticket. Get the next action — not another translation.",
+    chipModel: "<b>Model</b> reads the scene",
+    chipRules: "<b>Rules</b> decide the deadline",
+    chipZh: "<b>中文</b> ready to show staff",
+
+    step1: "1 · Trip context",
+    step1Hint: "Rules compare what's on site with your itinerary.",
+    step2: "2 · Show the site",
+    step3: "3 · Built-in cases",
+    step3Hint: "Tap to load — the cases a translation app can't solve.",
+
+    lblCity: "City",
+    lblStation: "Departure station (planned)",
+    lblTrain: "Train number",
+    lblBooked: "Booked with",
+    lblCarry: "Carry in my hand",
+    carryNote: "passport · chinese_id · visa · booking_qr · cash · card",
+    optPassport: "Passport (foreign)",
+    optChineseId: "Chinese ID",
+    optOther: "Other",
+    optUnknown: "Not sure",
+
+    btnPhoto: "Take photo",
+    noImage: "No image yet",
+    questionPh: 'Optional — what are you asking?\ne.g. "This machine won\'t accept me, what now?"',
+
+    emptyTitle: "Your next move, in your language",
+    emptyBody: "Snap or load a scene, fill in your trip — and get the exact next step, the document you need, and the real deadline.",
+
+    verdicts: "Verdicts from the rule engine",
+    stepsTitle: "Steps — in this order",
+    phrasesTitle: "Show this to staff in 中文",
+    missingTitle: "Missing items",
+    aiTitle: "AI answer note",
+    visionTitle: "What's on site (model read)",
+    badgeRule: "rule",
+    badgeModel: "model",
+
+    dialHint: "Slide to watch the rule engine react — no model call",
+    dialAria: "Minutes until departure",
+    btnReset: "Reset",
+    footer: "钉子头 · Team entry — 入境游 AI 创新",
+
+    // dynamic fragments
+    lblDeparture: "Departure",
+    lblGateCloses: "Gate closes",
+    lblArriveBy: "Arrive by",
+    lblScene: "Scene",
+    lblVerdict: "Rule engine verdict",
+    bufferNote: "buffer for security + ID check",
+    trainGone: "Train has already left",
+    gateClosed: "Gate already closed",
+    noTimePressure: "no time pressure",
+    noDepartureKnown: "No departure time known for this scene.",
+    minsLeft: "in {n} min",
+    tomorrow: "(tomorrow)",
+    departIn: "{n} min to departure",
+    departInShort: "{n} min — gate closes in {m}",
+    departed: "{n} min — your train has left",
+
+    sevCritical: "CRITICAL",
+    sevWarn: "WARN",
+    sevInfo: "INFO",
+    sevOk: "OK",
+
+    noFindingsTitle: "No rule blocked you.",
+    noFindingsBody: "No critical procedure, document or time issue detected for this scene.",
+    noPhrases: "No ready-to-show phrases for this scene.",
+    whyPrefix: "Why a normal translation app can't help here:",
+    sceneModel: "Scene (model)",
+    translationNote: "translation: {v}",
+    degradedNote: "stage-1 model unavailable, scene from hint",
+  },
+
+  zh: {
+    brandSub: "入境游客现场操作指引",
+    heroTitle: "下一步该做什么，说清楚。",
+    heroSub: "拍下指示牌、自助机或车票。得到可以直接执行的下一步——而不是又一段翻译。",
+    chipModel: "<b>模型</b>看懂现场",
+    chipRules: "<b>规则</b>判定截止时间",
+    chipZh: "<b>中文</b>直接给工作人员看",
+
+    step1: "1 · 行程信息",
+    step1Hint: "规则会把现场情况和你的行程做比对。",
+    step2: "2 · 拍下现场",
+    step3: "3 · 内置案例",
+    step3Hint: "点一下即可加载——翻译软件解决不了的场景。",
+
+    lblCity: "城市",
+    lblStation: "出发车站（计划）",
+    lblTrain: "车次",
+    lblBooked: "购票证件",
+    lblCarry: "随身携带",
+    carryNote: "护照 · 身份证 · 签证 · 订单二维码 · 现金 · 银行卡",
+    optPassport: "护照（外籍）",
+    optChineseId: "中国身份证",
+    optOther: "其他",
+    optUnknown: "不清楚",
+
+    btnPhoto: "拍照",
+    noImage: "还没有图片",
+    questionPh: '选填——你想问什么？\n例如："这台机器不认我，怎么办？"',
+
+    emptyTitle: "用你的语言，告诉你下一步",
+    emptyBody: "拍下或加载一个场景，填好行程——得到明确的下一步、需要的证件，以及真实的截止时间。",
+
+    verdicts: "规则引擎的结论",
+    stepsTitle: "按这个顺序做",
+    phrasesTitle: "给工作人员看的中文",
+    missingTitle: "还缺什么",
+    aiTitle: "AI 补充回答",
+    visionTitle: "现场识别结果（模型读取）",
+    badgeRule: "规则",
+    badgeModel: "模型",
+
+    dialHint: "拖动滑块，规则引擎实时响应——不调用模型",
+    dialAria: "距离发车分钟数",
+    btnReset: "重置",
+    footer: "钉子头 · 参赛作品 — 入境游 AI 创新",
+
+    lblDeparture: "发车",
+    lblGateCloses: "停止检票",
+    lblArriveBy: "建议到达",
+    lblScene: "场景",
+    lblVerdict: "规则引擎判定",
+    bufferNote: "预留安检 + 实名核验的时间",
+    trainGone: "列车已发车",
+    gateClosed: "检票口已关闭",
+    noTimePressure: "时间充裕",
+    noDepartureKnown: "此场景没有已知的发车时间。",
+    minsLeft: "还有 {n} 分钟",
+    tomorrow: "（次日）",
+    departIn: "距发车 {n} 分钟",
+    departInShort: "{n} 分钟 — 检票口 {m} 分钟后关闭",
+    departed: "{n} 分钟 — 你的车已经开了",
+
+    sevCritical: "紧急",
+    sevWarn: "警告",
+    sevInfo: "提示",
+    sevOk: "正常",
+
+    noFindingsTitle: "没有规则阻止你。",
+    noFindingsBody: "此场景未检测到证件、时间或流程上的关键问题。",
+    noPhrases: "此场景没有可直接展示的短语。",
+    whyPrefix: "为什么普通翻译软件解决不了：",
+    sceneModel: "场景（模型）",
+    translationNote: "翻译：{v}",
+    degradedNote: "第一阶段模型不可用，场景来自预设",
+  },
 };
+
+function t(key, vars) {
+  const lang = ($("lang") && $("lang").value) || "en";
+  let s = (UI_STRINGS[lang] && UI_STRINGS[lang][key]);
+  if (s == null) s = UI_STRINGS.en[key];
+  if (s == null) return key;
+  if (vars) Object.keys(vars).forEach((k) => {
+    s = s.replace(new RegExp("\\{" + k + "\\}", "g"), vars[k]);
+  });
+  return s;
+}
+
+const SEV_LABEL = { critical: "sevCritical", warn: "sevWarn", info: "sevInfo" };
+
+function applyUiLang() {
+  const lang = ($("lang") && $("lang").value) || "en";
+  document.documentElement.lang = lang === "zh" ? "zh-CN" : "en";
+
+  document.querySelectorAll("[data-i18n]").forEach((el) => {
+    const v = UI_STRINGS[lang] && UI_STRINGS[lang][el.getAttribute("data-i18n")];
+    if (v != null) el.textContent = v;
+  });
+  document.querySelectorAll("[data-i18n-html]").forEach((el) => {
+    const v = UI_STRINGS[lang] && UI_STRINGS[lang][el.getAttribute("data-i18n-html")];
+    if (v != null) el.innerHTML = v;
+  });
+  document.querySelectorAll("[data-i18n-ph]").forEach((el) => {
+    const v = UI_STRINGS[lang] && UI_STRINGS[lang][el.getAttribute("data-i18n-ph")];
+    if (v != null) el.setAttribute("placeholder", v);
+  });
+  document.querySelectorAll("[data-i18n-ar]").forEach((el) => {
+    const v = UI_STRINGS[lang] && UI_STRINGS[lang][el.getAttribute("data-i18n-ar")];
+    if (v != null) el.setAttribute("aria-label", v);
+  });
+
+  renderSamples();
+  if (state.lastResult) renderResult(state.lastResult);
+}
 
 // ---- bootstrapping ---------------------------------------------------------
 
@@ -24,7 +217,10 @@ async function init() {
     const j = await r.json();
     state.samples = j.samples || [];
   } catch (_) { state.samples = []; }
-  renderSamples();
+  // ?lang=zh in the URL starts the demo in Chinese (handy for sharing a link)
+  const urlLang = new URLSearchParams(location.search).get("lang");
+  if (urlLang && UI_STRINGS[urlLang]) $("lang").value = urlLang;
+  applyUiLang();
   bindEvents();
   // fill from URL hash so a sample can be opened by URL
   if (location.hash.length > 1) {
@@ -45,7 +241,8 @@ function bindEvents() {
   $("t-docs").addEventListener("input", debounce(() => maybeRun("trip"), 600));
 
   $("lang").addEventListener("change", () => {
-    if (state.lastResult) translateOnly(state.lastResult);
+    applyUiLang();                                  // switch the UI chrome
+    if (state.lastResult) translateOnly(state.lastResult);  // re-translate content
   });
 
   const dial = $("dial");
@@ -60,16 +257,19 @@ function bindEvents() {
 
 function renderSamples() {
   const root = $("samples");
+  const lang = ($("lang") && $("lang").value) || "en";
   root.innerHTML = "";
   state.samples.forEach((s) => {
+    const primary = lang === "zh" ? (s.title_zh || s.title) : s.title;
+    const secondary = lang === "zh" ? s.title : (s.title_zh || "");
     const el = document.createElement("div");
     el.className = "sample";
     el.innerHTML = `
-      <img src="/samples/${s.file}" alt="${s.title}">
+      <img src="/samples/${s.file}" alt="${escapeHtml(primary)}">
       <div class="meta">
         <div class="kick">${escapeHtml(s.kicker || "")}</div>
-        <div class="title">${escapeHtml(s.title)}</div>
-        <div class="mini">${escapeHtml(s.title_zh || "")}</div>
+        <div class="title">${escapeHtml(primary)}</div>
+        <div class="mini">${escapeHtml(secondary || "")}</div>
       </div>`;
     el.addEventListener("click", () => loadSample(s));
     root.appendChild(el);
@@ -88,13 +288,14 @@ async function loadSample(s) {
 }
 
 function fillFormFromSample(s) {
-  const t = s.trip || {};
-  $("t-city").value = t.city || "";
-  $("t-station").value = t.planned_station || "";
-  $("t-train").value = t.train_no || "";
-  $("t-booked").value = t.booked_with || "passport";
-  $("t-docs").value = (t.documents || ["passport"]).join(", ");
-  $("question").value = s.question || "";
+  const trip = s.trip || {};
+  const lang = ($("lang") && $("lang").value) || "en";
+  $("t-city").value = trip.city || "";
+  $("t-station").value = trip.planned_station || "";
+  $("t-train").value = trip.train_no || "";
+  $("t-booked").value = trip.booked_with || "passport";
+  $("t-docs").value = (trip.documents || ["passport"]).join(", ");
+  $("question").value = (lang === "zh" && s.question_zh) ? s.question_zh : (s.question || "");
 }
 
 // ---- file / preview ------------------------------------------------------
@@ -256,9 +457,9 @@ function onDial() {
 }
 
 function dialLabel(mins) {
-  if (mins <= 0) return `${mins} min — your train has left`;
-  if (mins <= 5) return `${mins} min — gate closes in ${mins}`;
-  return `${mins} min to departure`;
+  if (mins <= 0) return t("departed", { n: mins });
+  if (mins <= 5) return t("departInShort", { n: mins, m: mins });
+  return t("departIn", { n: mins });
 }
 
 // ---- rendering -----------------------------------------------------------
@@ -285,56 +486,56 @@ function renderResult(r) {
 }
 
 function renderTiming(r) {
-  const t = r.timing || {};
-  const lv = t.level || "ok";
+  const ti = r.timing || {};
+  const lv = ti.level || "ok";
   const klass = lv === "danger" || lv === "gate_closed" || lv === "departed"
                 ? "danger"
                 : (lv === "warn" ? "warn" : "");
   const root = $("timing");
-  if (!t.has_departure) {
+  if (!ti.has_departure) {
     root.innerHTML = `
       <div class="timer">
-        <div class="label">Scene</div>
+        <div class="label">${escapeHtml(t("lblScene"))}</div>
         <div class="value" style="font-size:18px;">${escapeHtml(r.scene_label || r.scene)}</div>
         <div class="sub">${escapeHtml(r.meta?.scene_from || "")}</div>
         <div class="ref">${r.meta?.elapsed_ms ?? "—"} ms</div>
       </div>
       <div class="timer">
-        <div class="label">Rule engine verdict</div>
-        <div class="value" style="font-size:16px;">${t.level === "ok" ? "no time pressure" : t.level}</div>
-        <div class="sub">No departure time known for this scene.</div>
+        <div class="label">${escapeHtml(t("lblVerdict"))}</div>
+        <div class="value" style="font-size:16px;">${lv === "ok" ? escapeHtml(t("noTimePressure")) : escapeHtml(lv)}</div>
+        <div class="sub">${escapeHtml(t("noDepartureKnown"))}</div>
       </div>`;
     return;
   }
-  const tm = t.is_tomorrow ? " tomorrow" : "";
-  const m2dep = t.minutes_to_departure;
-  const m2close = t.minutes_to_gate_close;
+  const tomorrowTag = ti.is_tomorrow ? " " + t("tomorrow") : "";
+  const m2dep = ti.minutes_to_departure;
+  const m2close = ti.minutes_to_gate_close;
   const subForDepart = m2dep == null ? "" :
-    (m2dep <= 0 ? "Train has already left"
-                 : `in ${m2dep} min${t.is_tomorrow ? " (tomorrow)" : ""}`);
+    (m2dep <= 0 ? escapeHtml(t("trainGone"))
+                 : escapeHtml(t("minsLeft", { n: m2dep })) + tomorrowTag);
   const subForClose = m2close == null ? "" :
-    (m2close <= 0 ? "Gate already closed"
-                   : `in ${m2close} min${t.is_tomorrow ? " (tomorrow)" : ""}`);
+    (m2close <= 0 ? escapeHtml(t("gateClosed"))
+                   : escapeHtml(t("minsLeft", { n: m2close })) + tomorrowTag);
   root.innerHTML = `
     <div class="timer">
-      <div class="label">Departure</div>
-      <div class="value">${escapeHtml(t.depart_time || "—")}${tm}</div>
+      <div class="label">${escapeHtml(t("lblDeparture"))}</div>
+      <div class="value">${escapeHtml(ti.depart_time || "—")}${tomorrowTag}</div>
       <div class="sub">${subForDepart}</div>
     </div>
     <div class="timer ${klass}">
-      <div class="label">Gate closes</div>
-      <div class="value">${escapeHtml(t.gate_close_time || "—")}</div>
+      <div class="label">${escapeHtml(t("lblGateCloses"))}</div>
+      <div class="value">${escapeHtml(ti.gate_close_time || "—")}</div>
       <div class="sub">${subForClose}</div>
-      <div class="ref">${escapeHtml(t.gate_close_rule || "")}</div>
+      <div class="ref">${escapeHtml(ti.gate_close_rule || "")}</div>
     </div>
     <div class="timer">
-      <div class="label">Arrive by</div>
-      <div class="value">${escapeHtml(t.arrive_by || "—")}</div>
-      <div class="sub">buffer for security + ID check</div>
-      <div class="ref">${escapeHtml(t.arrive_rule || "")}</div>
+      <div class="label">${escapeHtml(t("lblArriveBy"))}</div>
+      <div class="value">${escapeHtml(ti.arrive_by || "—")}</div>
+      <div class="sub">${escapeHtml(t("bufferNote"))}</div>
+      <div class="ref">${escapeHtml(ti.arrive_rule || "")}</div>
     </div>
     <div class="timer">
-      <div class="label">Scene</div>
+      <div class="label">${escapeHtml(t("lblScene"))}</div>
       <div class="value" style="font-size:18px;">${escapeHtml(r.scene_label || r.scene)}</div>
       <div class="sub">${escapeHtml(r.meta?.scene_from || "")}</div>
       <div class="ref">${r.meta?.elapsed_ms ?? "—"} ms</div>
@@ -346,25 +547,25 @@ function renderFindings(fs) {
   root.innerHTML = "";
   if (!fs.length) {
     root.innerHTML = `<div class="finding ok">
-      <div class="top"><span class="tag">OK</span>
-        <h3>No rule blocked you.</h3></div>
-      <div class="body">No critical procedure, document or time issue detected for this scene.</div></div>`;
+      <div class="top"><span class="tag">${escapeHtml(t("sevOk"))}</span>
+        <h3>${escapeHtml(t("noFindingsTitle"))}</h3></div>
+      <div class="body">${escapeHtml(t("noFindingsBody"))}</div></div>`;
     return;
   }
   fs.forEach((f) => {
-    const sev = SEV_LABEL[f.severity] || f.severity.toUpperCase();
+    const sev = t(SEV_LABEL[f.severity] || "sevInfo");
     const el = document.createElement("div");
     el.className = `finding ${f.severity}`;
     el.innerHTML = `
       <div class="top">
-        <span class="tag">${sev}</span>
+        <span class="tag">${escapeHtml(sev)}</span>
         <h3>${escapeHtml(f.title)}</h3>
         <span class="ref">${escapeHtml(f.rule_ref || "")}</span>
       </div>
       <div class="body">${escapeHtml(f.detail)}</div>
       ${f.why_translation_fails ? `
         <div class="why">
-          <strong>Why a normal translation app can't help here:</strong>
+          <strong>${escapeHtml(t("whyPrefix"))}</strong>
           ${escapeHtml(f.why_translation_fails)}
         </div>` : ""}`;
     root.appendChild(el);
@@ -392,7 +593,7 @@ function renderPhrases(fs) {
   root.innerHTML = "";
   const items = fs.filter((f) => f.zh_phrase);
   if (!items.length) {
-    root.innerHTML = `<div class="muted">No ready-to-show phrases for this scene.</div>`;
+    root.innerHTML = `<div class="muted">${escapeHtml(t("noPhrases"))}</div>`;
     return;
   }
   items.forEach((f) => {
@@ -427,13 +628,14 @@ function renderAiNote(r) {
   const m = $("ai-meta");
   const tr = r.translation || "en";
   const meta = r.meta || {};
-  m.textContent = `translation: ${tr}${meta.degraded ? "  ·  stage-1 model unavailable, scene from hint" : ""}`;
+  m.textContent = t("translationNote", { v: tr })
+    + (meta.degraded ? "  ·  " + t("degradedNote") : "");
 }
 
 function renderVision(v) {
   const root = $("vision");
   const kv = [];
-  kv.push(["Scene (model)", `${v.confidence ? Math.round(v.confidence * 100) + "% " : ""}${v.scene_label_en || v.scene}`]);
+  kv.push([t("sceneModel"), `${v.confidence ? Math.round(v.confidence * 100) + "% " : ""}${v.scene_label_en || v.scene}`]);
   Object.entries(v.extracted || {})
     .filter(([k, val]) => val != null && val !== "")
     .forEach(([k, val]) => kv.push([k, String(val)]));
