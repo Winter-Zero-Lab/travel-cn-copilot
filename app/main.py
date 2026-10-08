@@ -28,6 +28,26 @@ app.add_middleware(
 )
 
 
+_NO_CACHE_EXTS = (".css", ".js", ".html", ".svg", ".json")
+
+
+@app.middleware("http")
+async def no_cache_for_assets(request, call_next):
+    """Force browsers to revalidate every CSS/JS/HTML request.
+
+    Prevents the "stuck-on-old-CSS" layout break that happens when a deploy ships
+    new styles but the user still has the old ones in cache. ETag/304 still applies,
+    so this does NOT cause re-downloads — just re-checks.
+    """
+    response = await call_next(request)
+    path = request.url.path
+    if path == "/" or path.startswith("/samples/"):
+        response.headers["Cache-Control"] = "no-cache, must-revalidate"
+    elif path.endswith(_NO_CACHE_EXTS):
+        response.headers["Cache-Control"] = "no-cache, must-revalidate"
+    return response
+
+
 # ---------------------------------------------------------------------------
 # request / response models
 # ---------------------------------------------------------------------------
