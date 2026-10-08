@@ -33,6 +33,12 @@ _load_dotenv()
 # Multimodal LLM (glm-5.3-flash via micuapi.ai, OpenAI-compatible)
 # ---------------------------------------------------------------------------
 LLM_API_KEY = os.getenv("LLM_API_KEY", "")
+# A placeholder or obviously-fake key means "run in offline mode" — the demo's
+# built-in cases are baked into code and need no LLM. This lets the project
+# deploy on Render with zero configuration and still demo fully.
+if not LLM_API_KEY or "your-" in LLM_API_KEY.lower() or "changeme" in LLM_API_KEY.lower():
+    LLM_API_KEY = ""
+LLM_AVAILABLE = bool(LLM_API_KEY)
 LLM_BASE_URL = os.getenv("LLM_BASE_URL", "https://www.micuapi.ai/v1")
 LLM_MODEL = os.getenv("LLM_MODEL", "glm-5.3-flash")
 LLM_TIMEOUT = float(os.getenv("LLM_TIMEOUT", "60"))

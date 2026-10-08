@@ -6,7 +6,7 @@ import json
 import logging
 import os
 import time
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from fastapi import FastAPI, File, Form, HTTPException, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
@@ -14,8 +14,8 @@ from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 
-from . import i18n, rules as rules_mod, vision as vision_mod
-from .config import CN_TZ, PORT, SAMPLES_DIR, SUPPORTED_LANGS, WEB_DIR
+from . import demo_cases, i18n, rules as rules_mod, vision as vision_mod
+from .config import CN_TZ, LLM_AVAILABLE, PORT, SAMPLES_DIR, SUPPORTED_LANGS, WEB_DIR
 from .llm import LLMError
 from .rules import TripContext, evaluate
 
@@ -119,7 +119,7 @@ async def run_pipeline(req: AnalyzeRequest) -> dict:
 
     stage1_ok = True
     stage1_error = ""
-    if req.image:
+    if req.image and LLM_AVAILABLE:
         context_bits = [b for b in [req.city, req.planned_station, req.train_no] if b]
         try:
             vis = await vision_mod.understand_image(_as_data_url(req.image),
@@ -165,7 +165,7 @@ async def run_pipeline(req: AnalyzeRequest) -> dict:
         "stage1_model": stage1_ok,
         "stage1_error": stage1_error,
         "degraded": not stage1_ok,
-        "model": os.getenv("LLM_MODEL", "glm-5.3-flash"),
+        "model": (os.getenv("LLM_MODEL", "glm-5.3-flash") if LLM_AVAILABLE else "offline"),
         "elapsed_ms": int((time.time() - started) * 1000),
         "scene_from": "model" if stage1_ok else ("hint" if req.scene_hint else "none"),
         "server_time": now.strftime("%Y-%m-%d %H:%M"),
@@ -221,6 +221,51 @@ async def recompute(req: RecomputeRequest) -> JSONResponse:
         "elapsed_ms": int((time.time() - started) * 1000),
         "scene_from": "cache",
         "server_time": now.strftime("%Y-%m-%d %H:%M"),
+    }
+    return JSONResponse(payload)
+
+
+class DemoRequest(BaseModel):
+    id: str = ""
+    lang: str = "en"
+    depart_in_minutes: int | None = None
+    now_override: str | None = None
+
+
+@app.post("/api/demo")
+async def demo(req: DemoRequest) -> JSONResponse:
+    """Offline showcase.  No LLM call — uses the baked perception in demo_cases.
+
+    `depart_in_minutes` drives the demo time-slider: the departure is computed as
+    now + N minutes, so the rule engine re-evaluates the deadline live. The
+    frontend sends this straight from the dial.
+    """
+    case = demo_cases.get_case(req.id)
+    if not case:
+        raise HTTPException(status_code=404, detail="unknown demo case")
+    lang = req.lang if req.lang in SUPPORTED_LANGS else "en"
+    now = _now(req.now_override)
+    started = time.time()
+
+    trip = TripContext(**{k: v for k, v in case["trip"].items()})
+    if req.depart_in_minutes is not None:
+        dep = now + timedelta(minutes=req.depart_in_minutes)
+        trip.depart_time = dep.strftime("%Y-%m-%d %H:%M")
+
+    vis = case["vision"]
+    result = evaluate(vis, trip, now)
+    payload = i18n.to_payload(result, vis, lang)
+    ai_note = case.get("ai_note_zh") if lang == "zh" else case.get("ai_note_en", "")
+    payload = i18n.express_offline(payload, lang, ai_note)
+    payload["meta"] = {
+        "stage1_model": False,
+        "stage1_error": "",
+        "degraded": False,
+        "model": "offline-demo",
+        "elapsed_ms": int((time.time() - started) * 1000),
+        "scene_from": "baked",
+        "server_time": now.strftime("%Y-%m-%d %H:%M"),
+        "demo_case": req.id,
     }
     return JSONResponse(payload)
 

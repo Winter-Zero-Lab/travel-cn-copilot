@@ -10,6 +10,7 @@ const state = {
   lastResult: null,
   lastVision: null,
   dialTimer: null,
+  demoId: null,          // set when a baked sample is loaded; null for real uploads
 };
 
 // ---------------------------------------------------------------------------
@@ -277,6 +278,7 @@ function renderSamples() {
 }
 
 async function loadSample(s) {
+  state.demoId = s.id;          // route through the offline /api/demo endpoint
   fillFormFromSample(s);
   const noDep = s.depart_in_minutes == null;
   const dm = noDep ? 60 : s.depart_in_minutes;
@@ -303,6 +305,8 @@ function fillFormFromSample(s) {
 async function onFile(ev) {
   const file = ev.target.files && ev.target.files[0];
   if (!file) return;
+  state.demoId = null;          // real photo → use the model pipeline (if key present)
+  state.noDepartTime = false;
   const reader = new FileReader();
   reader.onload = async () => {
     await setPreviewDataUrl(reader.result);
@@ -368,6 +372,11 @@ function computeDepartInMinutesStr(mins) {
 
 async function run() {
   if (!state.imageDataUrl) return;
+  if (state.demoId) { await fetchDemo(); return; }
+  await fetchAnalyze();
+}
+
+async function fetchAnalyze() {
   const body = {
     image: state.imageDataUrl,
     question: $("question").value || "",
@@ -393,7 +402,12 @@ async function run() {
 }
 
 async function recompute() {
-  if (!state.lastVision) return;
+  if (!state.lastVision && !state.demoId) return;
+  if (state.demoId) { await fetchDemo(); return; }
+  await fetchRecompute();
+}
+
+async function fetchRecompute() {
   const body = {
     vision: state.lastVision,
     question: $("question").value || "",
@@ -417,6 +431,32 @@ async function recompute() {
     state.lastResult = data;
     renderResult(data);
   } catch (_) { /* ignored — slider keeps moving */ }
+}
+
+// Offline showcase: baked perception + live rule engine, no LLM call at all.
+async function fetchDemo() {
+  const dm = state.noDepartTime ? null : parseInt($("dial").value, 10);
+  const body = {
+    id: state.demoId,
+    lang: $("lang").value || "en",
+    depart_in_minutes: dm,
+  };
+  showThinking(true);
+  try {
+    const r = await fetch("/api/demo", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    });
+    const data = await r.json();
+    state.lastResult = data;
+    state.lastVision = data.vision;
+    renderResult(data);
+  } catch (err) {
+    renderError(err);
+  } finally {
+    showThinking(false);
+  }
 }
 
 async function translateOnly(prev) {
